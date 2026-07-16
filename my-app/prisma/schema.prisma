@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+}
+
+model Curso {
+  id          Int      @id @default(autoincrement())
+  nome        String
+  modalidade  Modalidade
+  aluno       Aluno[]
+}
+
+model Aluno {
+  id        Int      @id @default(autoincrement())
+  nome      String   
+  telefone  String   
+  cursoId   Int
+  curso     Curso    @relation(fields: [cursoId], references: [id])
+  planoFinanceiro PlanoFinanceiro[]
+}
+
+model PlanoFinanceiro {
+  id                 Int      @id @default(autoincrement())
+  quantidadeParcelas Int
+  alunoId            Int
+  aluno              Aluno   @relation(fields: [alunoId], references: [id])
+  categoria          Categoria
+  parcelas           Parcelas[]
+}
+
+model Parcelas {
+  id                 Int      @id @default(autoincrement())
+  dataVencimento     DateTime
+  dataPagamento      DateTime?
+  valor              Decimal
+  descontosOuJuros   Decimal  @default(0)
+  cancelada          Boolean  @default(false)
+  planoFinanceiroId  Int
+  planoFinanceiro    PlanoFinanceiro @relation(fields: [planoFinanceiroId], references: [id])
+}
+
+enum Modalidade {
+  REGULAR
+  DIGITAL
+}
+
+enum Categoria {
+  PARCELA
+  MATRICULA
+}
