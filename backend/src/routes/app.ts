@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import { authMiddleware } from "../middlewares/authMiddleware";
+import authRoutes from './auth.routes'; // Como eu não especifiquei o nome do arquivo eu posso nomea-lo do jeito que eu quiser na hora de importar o arquivo de rota
 
 const app = express();
 
@@ -12,5 +14,7 @@ app.use(express.json());
 app.get('/', (req, res) => {
   res.status(200).json({ message: 'A api está rodando!' });
 });
+
+app.use('auth',authMiddleware, authRoutes); // Minha rota vai ficar: http://localhost/auth/login ?
 
 export default app;

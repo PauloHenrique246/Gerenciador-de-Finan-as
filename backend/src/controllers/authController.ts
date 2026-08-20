@@ -1,12 +1,12 @@
 import prisma from '../config/prisma';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { Request, Response, NextFunction } from 'express';
+import { Request, Response} from 'express';
 
 dotenv.config();
 
-export async function loginController(req: Request, res: Response, next: NextFunction) {
+export async function loginController(req: Request, res: Response) {
     try{
         const { email, password } = req.body;
 
