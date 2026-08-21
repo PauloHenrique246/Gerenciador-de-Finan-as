@@ -1,29 +1,22 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Edutech",
-  description: "Sistema de gerenciamento de finanças da Concretta",
+  title: "EduFinance - Login",
+  description: "Acesse sua conta no sistema EduFinance.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
-    <html
-      lang="pt-br"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-    >
-      <body className="min-h-full flex flex-col">{children}</body>
+    // O suppressHydrationWarning evita avisos no console quando o script do modo escuro injeta a classe 'dark' no HTML
+    <html lang="pt-BR" suppressHydrationWarning>
+      <body className="antialiased">
+        {children}
+      </body>
     </html>
   );
 }
