@@ -16,7 +16,7 @@ export async function loginController(req: Request, res: Response) {
             return;
         };
 
-        // Verifica se a senha condiz com obanco só depois de validar se o email existe, a fim de evitar buscas desnecessárias no banco de dados
+        // Verifica se a senha condiz com a do banco só depois de validar se o email existe, a fim de evitar buscas desnecessárias no banco de dados
         const passowordValid = bcrypt.compareSync(password, user.password_hash); // Compara a senha informada com a senha do banco de dados que está em hash
         if(passowordValid === false){
             res.status(400).json({ message: 'Usuário não encontrado, verifique os dados informados!' });
@@ -28,7 +28,7 @@ export async function loginController(req: Request, res: Response) {
             throw new Error('A variável de ambiente JWT_SECRET não está definida!'); // Usamos o throw para lançar um erro e interromper a execução do programa
         };
 
-        const token = jwt.sign(email, jwtSecret, {expiresIn: '1h'}); // Token com base no email que expira em 1 hora
+        const token = jwt.sign({ email }, jwtSecret, {expiresIn: '1h'}); // Token com base no email que expira em 1 hora
         res.status(200).json({status: "sucess", message: "Login bem sucedido!", token});
 
     } catch (error) {

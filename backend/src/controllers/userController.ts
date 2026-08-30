@@ -12,23 +12,10 @@ export async function createUsers(req: Request, res: Response){
         };
 
         const user_existing = await prisma.user.findFirst({where: email});
-        if(email === user_existing?.email){
+        if(user_existing){
             res.status(400).json("Este email já está cadastrado no banco!");
             return;
         };
-
-        // if(name === user_existing?.name){
-        //     res.json({message: 'Existe um usuário com o mesmo nome que este, deseja inseri-lo mesmo assim?'});
-
-        //     const {response} = req.body;
-
-        //     if(response === 1){
-        //         res.json({message: 'Certo, criando usuário...'});
-        //     } else{
-        //         res.json({message: 'Certo, basta alterar o nome!'});
-        //         return;
-        //     };
-        // }
 
         const password_hash = await bcrypt.hash(password, 10); // Este número depois da senha indica o tanto de vezes que o bcrypt irá criptografar. Quantos maior, mais demorado se torna
         
