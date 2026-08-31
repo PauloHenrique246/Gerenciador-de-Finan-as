@@ -6,7 +6,7 @@ import { Request, Response} from 'express';
 
 dotenv.config();
 
-export async function loginController(req: Request, res: Response) {
+export async function login(req: Request, res: Response) {
     try{
         const { email, password } = req.body;
 

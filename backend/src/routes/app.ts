@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
-import { loginController } from "../controllers/authController";
-import { createUsers } from '../controllers/userController';
+import { login } from "../controllers/authController";
+import { createUser, deleteUser, updateUser } from '../controllers/userController';
 import { authMiddleware } from "../middlewares/authMiddleware";
 
 const app = express();
@@ -16,8 +16,10 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'A api está rodando!' });
 });
 
-app.post('/login', loginController); // Rota para logar
+app.post('/login', login); // Rota para logar
 
-app.post('/register', authMiddleware, createUsers); // Rota para criar um usuário no banco
-app.get('/register', authMiddleware); // Sem token proíbe
+app.post('/register', authMiddleware, createUser); // Rota para criar um usuário no banco
+app.put('/register', authMiddleware, updateUser); // Rota para atualizar um usuário no banco
+app.delete('/register', authMiddleware, deleteUser); // Rota para apagar um usuário no banco
+
 export default app;

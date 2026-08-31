@@ -1,17 +1,18 @@
 import prisma from "../config/prisma";
 import { Request, Response} from "express";
 import bcrypt from "bcryptjs";
+import { UserInterface } from "../interfaces/types";
 
-export async function createUsers(req: Request, res: Response){
+export async function createUser(req: Request, res: Response){
     try{
-        const {name, email, password} = req.body;
+        const {name, email, password}: UserInterface = req.body;
         
         if(!name || !email || !password){
             res.status(400).json({message: "Os campos não foram preenchidos corretamente!"});
             return;
         };
 
-        const user_existing = await prisma.user.findFirst({where: email});
+        const user_existing = await prisma.user.findFirst({where: {email}});
         if(user_existing){
             res.status(400).json("Este email já está cadastrado no banco!");
             return;
@@ -29,6 +30,27 @@ export async function createUsers(req: Request, res: Response){
 
         res.status(200).json({message: "Usuário criado com sucesso!", create_user});
     } catch(error) {
-        res.status(500).json(console.error(`Falha na criação de usuário: `, error));
+        console.error(`Falha na criação de usuário: `, error);
+        res.status(500).json({message: "Erro interno no servidor"});
     };
+};
+
+export async function updateUser(req: Request, res:Response){
+    try {
+        const {email}: UserInterface = req.body;
+        // Excluir com base no id
+    } catch (error) {
+        console.error(`Falha na atualização de dados do usuário: `, error);
+        res.status(500).json({message: "Erro interno no servidor"});
+    }
+};
+
+export async function deleteUser(req: Request, res:Response){
+    try {
+        const {email}: UserInterface = req.body;
+        // Excluir com base no id
+    } catch (error) {
+        console.error(`Falha na exclusão de dados do usuário: `, error);
+        res.status(500).json({message: "Erro interno no servidor"});
+    }
 };
